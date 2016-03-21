@@ -28,7 +28,7 @@ moment.locale('rockwood', {
         sameElse: 'L'
     },
     relativeTime : {
-        future : "Il est rockwood -%s",
+        future : "Il est rockwood -%s !",
         past : "Le rockwood est déjà ouvert depuis %s, qu'est-ce que tu fais encore là ?!",
         s : "quelques secondes",
         m : "1 minute",
