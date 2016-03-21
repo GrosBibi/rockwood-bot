@@ -4,6 +4,7 @@ var redis = require('botkit/lib/storage/redis_storage');
 var http = require('http');
 var url = require('url');
 var moment = require('moment');
+var test = require('./precisediff');
 
 moment.locale('rockwood', {
     months : "janvier_février_mars_avril_mai_juin_juillet_août_septembre_octobre_novembre_décembre".split("_"),
@@ -70,7 +71,6 @@ moment.relativeTimeThreshold('h', 23);
 moment.relativeTimeThreshold('d', 29);
 moment.relativeTimeThreshold('M', 11);
 
-
 /*var redisURL = url.parse(process.env.REDISCLOUD_URL);
 var redisStorage = redis({
     namespace: 'rockwood-bot',
@@ -93,11 +93,33 @@ controller.hears(['rockwood'],'direct_message,direct_mention,mention,ambient',fu
     if(response.user.name != "slackbot"){
       var now = moment(new Date());
       var rockwoodOpen = moment(new Date()).hour(17).minute(00).second(0);
-
-      bot.reply(message,now.to(rockwoodOpen));    
+      var reply = "";
+      if(now < rockwoodOpen) {
+        reply = String.format('Il est Rockwood moins {0} !', moment.preciseDiff(now, rockwoodOpen));
+      }
+      else{
+        reply = String.format("Le rockwood est déjà ouvert depuis {0}, qu'est-ce que tu fais encore là ?!", moment.preciseDiff(now, rockwoodOpen));
+      }
+      bot.reply(message, reply);
     }
   })
 });
+
+String.format = function() {
+    // The string containing the format items (e.g. "{0}")
+    // will and always has to be the first argument.
+    var theString = arguments[0];
+    
+    // start with the second argument (i = 1)
+    for (var i = 1; i < arguments.length; i++) {
+        // "gm" = RegEx options for Global search (more than one instance)
+        // and for Multiline search
+        var regEx = new RegExp("\\{" + (i - 1) + "\\}", "gm");
+        theString = theString.replace(regEx, arguments[i]);
+    }
+    
+    return theString;
+}
 
 http.createServer(function(request, response) {
     response.writeHead(200, {'Content-Type': 'text/plain'});
