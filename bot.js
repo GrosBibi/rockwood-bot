@@ -83,10 +83,13 @@ var bot = controller.spawn({
 }).startRTM();
 
 controller.hears(['rockwood'],'direct_message,direct_mention,mention,ambient',function(bot, message) {
-  var now = moment(new Date());
-  var rockwoodOpen = moment(new Date()).hour(17).minute(00).second(0);
-  bot.reply(message,now.to(rockwoodOpen));
-  bot.reply(message, "N'oublie pas d'inviter les Jamshake si tu vas au Rockwood !");
+  bot.api.users.info({user:message.user},function(err,response) {
+    if(response.user.name != "slackbot"){
+      var now = moment(new Date());
+      var rockwoodOpen = moment(new Date()).hour(17).minute(00).second(0);
+      bot.reply(message,now.to(rockwoodOpen));    
+    }
+  })
 });
 
 http.createServer(function(request, response) {
