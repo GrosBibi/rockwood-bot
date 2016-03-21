@@ -86,6 +86,7 @@ controller.hears(['rockwood'],'direct_message,direct_mention,mention,ambient',fu
   var now = moment(new Date());
   var rockwoodOpen = moment(new Date()).hour(17).minute(00).second(0);
   bot.reply(message,now.to(rockwoodOpen));
+  bot.reply(message, "N'oublie pas d'inviter les Jamshake si tu vas au Rockwood !");
 });
 
 http.createServer(function(request, response) {
