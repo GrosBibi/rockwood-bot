@@ -64,6 +64,12 @@ moment.locale('rockwood', {
     }
 });
 
+moment.relativeTimeThreshold('s', 59);
+moment.relativeTimeThreshold('m', 59);
+moment.relativeTimeThreshold('h', 23);
+moment.relativeTimeThreshold('d', 29);
+moment.relativeTimeThreshold('M', 11);
+
 
 /*var redisURL = url.parse(process.env.REDISCLOUD_URL);
 var redisStorage = redis({
@@ -87,6 +93,7 @@ controller.hears(['rockwood'],'direct_message,direct_mention,mention,ambient',fu
     if(response.user.name != "slackbot"){
       var now = moment(new Date());
       var rockwoodOpen = moment(new Date()).hour(17).minute(00).second(0);
+
       bot.reply(message,now.to(rockwoodOpen));    
     }
   })
